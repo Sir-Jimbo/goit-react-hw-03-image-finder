@@ -1,9 +1,9 @@
-import PhoneBook from './components/PhoneBook/PhoneBook'
+import ImageFinder from './components/ImageFinder/ImageFinder'
 
 export default function App() {
   return (
     <div>
-      <PhoneBook />
+      <ImageFinder />
     </div>
   );
 }
