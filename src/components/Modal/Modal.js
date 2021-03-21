@@ -1,41 +1,66 @@
-import React from 'react';
+import React, { Component } from 'react';
+import s from './Modal.module.css';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import Spinner from '../Spinner/Spinner';
+import Img from '../../images/No_Image-512.webp';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export class Modal extends React.Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.onEscPress);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onEscPress);
-  }
-  onEscPress = event => {
-    if (event.code === 'Escape') {
-      this.props.closeModal();
-    }
-  };
+export default class Modal extends Component {
+    static propTypes = {
+        image: PropTypes.object,
+        onClose: PropTypes.func,
+    };
 
-  onCloseModal = event => {
-    if (event.target === event.currentTarget) {
-      this.props.closeModal();
-    }
-  };
+    state = {   
+        isLoading: true,
+    }; 
 
-  render() {
-    return createPortal(
-      <div className="Overlay" onClick={this.onCloseModal}>
-        <div className="Modal">
-          <img src={this.props.largeImageURL} alt="" />
-        </div>
-      </div>,
-      modalRoot,
-    );
-  }
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('keydown', this.handleKeyDown);
+    }
+
+    handleKeyDown = e => {
+    if (e.code === 'Escape') {
+        this.props.onClose();
+        }
+    }
+
+    handleBackdropClick = e => {
+        if (e.currentTarget === e.target) {
+            this.props.onClose();
+        }
+    }
+    onLoad = () => {
+        this.setState({ isLoading: false });
+    }
+
+    render() {
+        const { src, alt } = this.props.image;
+        const { isLoading } = this.state;
+        
+        return createPortal(
+            <>
+            <div className={s.Overlay} onClick={this.handleBackdropClick}>
+                <div className={s.Modal}>
+                         
+                        {isLoading && (
+                            <div className={s.SpinnerCentered}>
+                                <Spinner />
+                            </div>)}
+                        
+                    <img
+                        onLoad={this.onLoad}
+                        src={src ? src : Img}
+                        alt={alt} />
+                </div>
+            </div>
+            </>,
+            modalRoot);
+    }
 }
-
-Modal.propTypes = {
-  largeImageURL: PropTypes.string.isRequired,
-  closeModal: PropTypes.func.isRequired,
-};

@@ -1,33 +1,25 @@
-import React from 'react';
+import s from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
+import Img from '../../images/No_Image-512.webp';
 
-export function ImageGalleryItem({
-  src,
-  srcOriginal,
-  id,
-  alt,
-  getLargeImageURL,
-}) {
-  const handleClick = evt => getLargeImageURL(evt.target.dataset.source);
+const ImageGalleryItem = ({ webformatURL, tags, clickOnItem }) => (
+    <div className={s.ImageGalleryItem}>
+        <img
+            src={webformatURL ?  webformatURL : Img}
+            alt={tags}
+            onClick={clickOnItem}
+            className={s.ImageGalleryItemImage} />
+    </div>
+)
 
-  return (
-    <li className="ImageGalleryItem">
-      <img
-        src={src}
-        alt={alt}
-        data-source={srcOriginal}
-        data-id={id}
-        className="ImageGalleryItem-image"
-        onClick={handleClick}
-      />
-    </li>
-  );
-}
+ImageGalleryItem.defaultProps = {
+  webformatURL: Img,
+};
 
 ImageGalleryItem.propTypes = {
-  src: PropTypes.string.isRequired,
-  srcOriginal: PropTypes.string.isRequired,
-  id: PropTypes.number,
-  alt: PropTypes.string,
-  getLargeImageURL: PropTypes.func.isRequired,
+    webformatURL: PropTypes.string,
+    tags: PropTypes.string.isRequired,
+    clickOnItem: PropTypes.func,
 };
+
+export default ImageGalleryItem;

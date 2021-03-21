@@ -1,14 +1,14 @@
-import React from 'react';
+import s from './Button.module.css';
 import PropTypes from 'prop-types';
 
-export function Button({ onClick }) {
-  return (
-    <button className="Button" onClick={onClick}>
-      Load more
-    </button>
-  );
-}
+const Button = ({ onIncrement }) => (
+    <div className={s.ButtonSection}>
+        <button type="button" onClick={onIncrement} className={s.Button}>Load more</button>
+    </div>
+)
 
 Button.propTypes = {
-  onClick: PropTypes.func.isRequired,
+    onIncrement: PropTypes.func,
 };
+
+export default Button;
