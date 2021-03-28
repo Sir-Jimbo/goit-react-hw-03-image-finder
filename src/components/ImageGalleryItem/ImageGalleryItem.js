@@ -2,18 +2,20 @@ import s from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 import Img from '../../images/No_Image-512.webp';
 
-const ImageGalleryItem = ({ webformatURL, tags, clickOnItem }) => (
+const ImageGalleryItem = ({ webformatURL, tags, clickOnItem, index, largeImageURL }) => (
     <div className={s.ImageGalleryItem}>
-        <img
-            src={webformatURL ?  webformatURL : Img}
-            alt={tags}
-            onClick={clickOnItem}
-            className={s.ImageGalleryItemImage} />
+        <li key={index}>
+            <img
+                src={webformatURL ? webformatURL : Img}
+                alt={tags}
+                onClick={() => clickOnItem(largeImageURL, tags)}
+                className={s.ImageGalleryItemImage} />
+        </li>
     </div>
 )
 
 ImageGalleryItem.defaultProps = {
-  webformatURL: Img,
+    webformatURL: Img,
 };
 
 ImageGalleryItem.propTypes = {
